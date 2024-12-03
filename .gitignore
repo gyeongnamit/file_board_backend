@@ -2,6 +2,7 @@
 #그외 파일이 저장된 폴더는 제외 합니다
 .gradle/
 build/
+bin/
 
 #Visual Studio Code의 설정 파일은 제외 합니다
 .vscode/
