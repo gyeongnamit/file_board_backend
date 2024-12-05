@@ -29,3 +29,5 @@ jobs:
       # 4. Docker Hub에 이미지 업로드
       - name: Push Docker image
         run: docker push $DOCKERHUB_USERNAME/file_board_backend_image:latest
+
+        
