@@ -10,7 +10,10 @@ import software.amazon.awssdk.regions.*;
 import software.amazon.awssdk.services.s3.*;
 import software.amazon.awssdk.services.s3.model.*;
 import java.io.*;
+import java.net.HttpURLConnection;
 import java.nio.file.*;
+
+import java.net.*;
 
 
 @RestController
@@ -88,5 +91,26 @@ public class PostController {
         // 모든 게시물을 조회하여 반환
         return postRepository.findAll();
     }
+
+    // AWS 인스턴스 Public IP 반환 메서드
+    @GetMapping("/post/ip")
+    public String getInstanceIp() {
+        String metadataUrl = "http://169.254.169.254/latest/meta-data/public-ipv4";
+        try {
+            URL url = new URL(metadataUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.setConnectTimeout(2000);
+            connection.setReadTimeout(2000);
+
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+                return "PostController Public IP=" + reader.readLine(); 
+            }
+        } catch (IOException e) {
+            return "Unable to retrieve instance Public IP: " + e.getMessage();
+        }
+
+    }
+    
 }
 
