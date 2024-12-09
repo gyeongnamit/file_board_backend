@@ -91,14 +91,14 @@ public class PostController {
         return postRepository.findAll();
     }
 
-     // AWS 인스턴스 내부 IP 반환 메서드
+    // Docker 실행 시 설정된 AWS_PUBLIC_IP 환경변수 출력 메서드
     @GetMapping("/instance/ip")
-    public String getInstanceIp() {
-        try {
-            InetAddress localHost = InetAddress.getLocalHost();
-            return localHost.getHostAddress(); // 현재 인스턴스의 IP 반환
-        } catch (UnknownHostException e) {
-            return "Unable to retrieve instance IP: " + e.getMessage();
+    public String getInstanceIP() {
+        String publicIp = System.getenv("AWS_PUBLIC_IP"); // 환경변수에서 AWS_PUBLIC_IP 가져오기
+        if (publicIp != null && !publicIp.isEmpty()) {
+            return "AWS Public IP: " + publicIp;
+        } else {
+            return "AWS_PUBLIC_IP environment variable is not set.";
         }
     }
     
